@@ -1,68 +1,62 @@
 const authPage = document.querySelector("main#auth");
 
 if (authPage) {
+  const hideAuthForms = () => {
+    authPage.querySelectorAll("form").forEach((el) => el.classList.add("hide"));
+  };
 
-    const hideAuthForms = () => {
-        authPage
-            .querySelectorAll('form')
-            .forEach((el) => el.classList.add('hide'));
-    };
+  const showAuthForm = (id: string) => {
+    document.getElementById(id)?.classList.remove("hide");
+  };
 
-    const showAuthForm = (id: string) => {
-        document.getElementById(id)?.classList.remove('hide');
-    };
+  const render = () => {
+    hideAuthForms();
 
-    const render = () => {
-        
-        hideAuthForms();
-
-        if (sessionStorage.getItem('email')) {
-            document.querySelectorAll<HTMLInputElement>('[name="email"]').forEach((el) => {
-
-                el.value = sessionStorage.getItem('email') ?? '';
-    
-            });
-        }
-
-        switch (window.location.hash) {
-            case '#login':
-                showAuthForm('login');
-                break;
-            case '#register':
-                showAuthForm('register');
-                break;
-            case '#forget':
-                showAuthForm('forget');
-                break;
-            case '#reset':
-                showAuthForm('reset');
-                break;
-            default:
-                showAuthForm('auth-email');
-        }
-
+    if (sessionStorage.getItem("email")) {
+      document
+        .querySelectorAll<HTMLInputElement>('[name="email"]')
+        .forEach((el) => {
+          el.value = sessionStorage.getItem("email") ?? "";
+        });
     }
 
-    window.addEventListener('load', () => {
-        // Executado quando a página carrega
-        render();
-    });
-    window.addEventListener('hashchange', () => render());
+    switch (window.location.hash) {
+      case "#login":
+        showAuthForm("login");
+        break;
+      case "#register":
+        showAuthForm("register");
+        break;
+      case "#forget":
+        showAuthForm("forget");
+        break;
+      case "#reset":
+        showAuthForm("reset");
+        break;
+      default:
+        showAuthForm("auth-email");
+    }
+  };
 
-    const formAuthEmail = document.querySelector('#auth-email') as HTMLFormElement;
+  window.addEventListener("load", () => {
+    // Executado quando a página carrega
+    render();
+  });
+  window.addEventListener("hashchange", () => render());
 
-    formAuthEmail?.addEventListener('submit', (e) => {
+  const formAuthEmail = document.querySelector(
+    "#auth-email"
+  ) as HTMLFormElement;
 
-        e.preventDefault();
+  formAuthEmail?.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-        const form = e.target as HTMLFormElement;
+    const form = e.target as HTMLFormElement;
 
-        const input = form?.querySelector('[type="email"]') as HTMLInputElement;
+    const input = form?.querySelector('[type="email"]') as HTMLInputElement;
 
-        sessionStorage.setItem('email', input.value);
+    sessionStorage.setItem("email", input.value);
 
-        location.hash = '#login';
-
-    });
-
+    location.hash = "#login";
+  });
 }
